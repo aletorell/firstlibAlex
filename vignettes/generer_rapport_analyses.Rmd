@@ -1,0 +1,19 @@
+---
+title: "generer_rapport_analyses"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{generer_rapport_analyses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(firstlibAlex)
+```

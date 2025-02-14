@@ -11,9 +11,10 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5)
 LazyData: true
-Suggests: 
-    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://github.com/aletorell/firstlibAlex
 BugReports: https://github.com/aletorell/firstlibAlex/issues
-
+VignetteBuilder: quarto, knitr
+Suggests: 
+    knitr,
+    rmarkdown

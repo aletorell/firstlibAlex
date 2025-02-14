@@ -1,0 +1,83 @@
+---
+title: "Générer un rapport d'analyses"
+author: "Àlex Chafes Martorell"
+date: today
+vignette: >
+  %\VignetteIndexEntry{Générer un rapport d'analyses}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+library(firstlibAlex)
+```
+
+# Générer un rapport d'analyses
+
+Ce document explique comment utiliser les principales fonctions du package. "firstlibAlex"
+
+# 1️⃣ Résumé des données par commune
+
+La fonction summary_commune() génère les résultats suivants pour une commune donnée :
+
+\- Le nom de la commune.
+
+\- Le nombre d'élus dans la commune.
+
+\- La distribution des âges des élus dans la commune.
+
+\- Le nom, le prénom et l'âge de l'élu.e le plus âgé(e).
+
+La fonction vérifie également que toutes les colonnes nécessaires sont présentes et que les dates de naissance sont au format correct. En cas d'erreur, elle génère un message d'arrêt.
+
+EXEMPLE:
+
+Premièrement, nous procédons à créer le dataframe de la commune que nous souhaitons évaluer., dans ce cas nous allos récollecter les données pour Lyon.
+
+```{r}
+library(firstlibAlex)
+Lyon <- creer_commune(elus_cm, "Lyon")
+```
+
+Une fois la base de données est chargée, on passe à l'analyse de la commune de Lyon à partir de la fonction summary_commune.
+
+```{r}
+library(firstlibAlex)
+summary_commune(Lyon)
+```
+
+# 2️⃣ Résumé des données par département
+
+La fonction Summary_departement() génère un résumé statistique des élus d'un département, y compris les informations sur les âges (distribution de l'âge), les élus les plus âgés et les plus jeunes, ainsi que les communes ayant les moyennes d'âge les plus faibles et les plus élevées.
+
+La fonction vérifie également que toutes les colonnes nécessaires sont présentes et que les dates de naissance sont au format correct. En cas d'erreur, elle génère un message d'arrêt.
+
+EXEMPLE:
+
+Premièrement, nous procédons à créer le dataframe du département que nous souhaitons évaluer., dans ce cas nous allos récollecter les données pour Gironde.
+
+```{r}
+library(firstlibAlex)
+Gironde <- creer_departement(elus_cm, "Gironde")
+```
+
+Une fois la base de données est chargée, on passe à l'analyse du département Gironde à partir de la fonction Summary_departement
+
+```{r}
+library(firstlibAlex)
+Summary_departement(Gironde)
+```
+
+# 3️⃣ Générer un rapport complet
+
+la fonction generer_rapport génère un rapport en utilisant un fichier Quarto (.qmd) pour analyser les caractéristiques des élus lors des élections françaises de 2024, en se basant sur les paramètres 'code_commune' et 'code_departement'. Le rapport sera rendu dans le fichier spécifié par l'utilisateur ou choisi via une boîte de dialogue si le chemin de sortie n'est pas précisé.
+
+EXEMPLE
+
+Nous procédons à créer un rapport de la commune 1002 et le département 44:
+
+```{r, eval = FALSE, echo = TRUE}
+generer_rapport(1002, 44, output = "C:/Users/aalex/OneDrive/Escritorio/unicornio/rapport.html")
+```
+
+Dans le dossier "unicornio" le rapport sera créé sous le nom "rapport.html"
