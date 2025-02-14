@@ -22,7 +22,7 @@
 #' generer_rapport(1001, 1)
 generer_rapport <- function(code_commune, code_departement, output = NULL) {
 
-  # 1. Valider que 'code_commune' et 'code_departement' ne soient pas vides
+  # Validación de los parámetros
   if (missing(code_commune) || is.null(code_commune) || code_commune == "") {
     stop("Erreur : 'code_commune' doit être spécifié.")
   }
@@ -31,55 +31,50 @@ generer_rapport <- function(code_commune, code_departement, output = NULL) {
     stop("Erreur : 'code_departement' doit être spécifié.")
   }
 
-  # 2. Valider que 'code_commune' et 'code_departement' sont des nombres
   if (!is.numeric(code_commune) || !is.numeric(code_departement)) {
     stop("Erreur : 'code_commune' et 'code_departement' doivent être des nombres.")
   }
 
-  # 3. Valider que 'code_commune' contient au moins 4 chiffres
   if (nchar(as.character(code_commune)) < 4) {
     stop("Erreur : 'code_commune' doit contenir au moins 4 chiffres.")
   }
 
-  # 4. Si el parámetro 'output' no es pasado, pedir al usuario que elija la ruta y nombre del archivo
+  # Si 'output' no está especificado, se pedirá al usuario que elija la ruta y nombre del archivo
   if (is.null(output)) {
-    output <- file.choose()  # Abrir un cuadro de diálogo para seleccionar la ruta del archivo de salida
+    output <- file.choose()  # Selección de archivo a través de un diálogo
   } else {
-    # Asegurarse de que la ruta tenga la extensión '.html'
+    # Comprobación de que la extensión es '.html'
     if (!grepl("\\.html$", output)) {
-      stop("Erreur : le fichier de sortie doit avoir une extension '.html'.")
+      stop("Erreur : Le fichier de sortie doit avoir l'extension '.html'.")
     }
   }
 
-  # 5. Asegurarse de que el directorio de salida existe
-  output_dir <- dirname(output)  # Obtener el directorio de la ruta de salida
-  if (!dir.exists(output_dir)) {
-    stop("Erreur : Le dossier spécifié n'existe pas.")
-  }
-
-  # 6. Localizar el archivo 'rapport.qmd' dentro del paquete
+  # Localizar el archivo 'rapport.qmd' en el paquete
   rapport_path <- system.file("rapport.qmd", package = "firstlibAlex")
 
-  # Verificar si el archivo existe
+  # Verificación de la existencia del archivo
   if (rapport_path == "") {
     stop("Le fichier rapport.qmd est introuvable dans le package.")
   }
 
-  # Crear variables para los números de la comuna y el departamento
+  # Variables para el código de la comuna y del departamento
   numero_commune <- code_commune
   numero_departement <- code_departement
 
-  # Mostrar los números de comuna y departamento elegidos
+  # Mensajes de información
   message("Vous avez choisi le numéro de commune: ", numero_commune)
   message("Vous avez choisi le numéro de département: ", numero_departement)
 
-  # 7. Compilar el informe con Quarto
+  # Cambiar directorio de trabajo al directorio del archivo de salida (para que todo se guarde allí)
+  output_dir <- dirname(output)
+  setwd(output_dir)
+
+  # Compilación del informe con Quarto
   quarto::quarto_render(
-    input = rapport_path,  # El archivo de entrada que está parametrizado
-    output_file = basename(output),  # Usar solo el nombre del archivo sin la ruta completa
-    output_dir = output_dir,  # Establecer el directorio de salida
+    input = rapport_path,
+    output_file = basename(output),  # Guardar solo el nombre de archivo, no la ruta completa
     execute_params = list(
-      code_commune = numero_commune,  # Usar las variables de número de comuna y departamento
+      code_commune = numero_commune,
       code_departement = numero_departement
     )
   )
@@ -87,6 +82,6 @@ generer_rapport <- function(code_commune, code_departement, output = NULL) {
   # Abrir el archivo generado en el navegador por defecto
   browseURL(output)
 
-  # Mostrar un mensaje confirmando el éxito de la generación
+  # Confirmación de éxito
   message("Rapport généré avec succès à: ", output)
 }
