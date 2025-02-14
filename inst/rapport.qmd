@@ -1,0 +1,224 @@
+---
+title: "rapport"
+author: "Àlex Chafes Martorell"
+format: html
+params:
+  code_commune: "1001"  
+  code_departement: "1"  
+---
+
+```{r, include=FALSE}
+packages <- c("quarto", "remotes", "knitr", "writexl")
+
+install_if_required <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg, dependencies = TRUE)
+  }
+}
+
+lapply(packages, install_if_required)
+```
+
+```{r, include=FALSE}
+library(remotes)
+if (!requireNamespace("firstlibAlex", quietly = TRUE)) {
+  remotes::install_github("aletorell/firstlibAlex")
+}
+library(firstlibAlex)
+data("elus_cm")
+```
+
+```{r, include=FALSE}
+# Avec cette code nous sommes capables de filtrer les données nécessaires pour le rapport du département.
+
+# Filtrer les données pour le département choisi
+
+# Utiliser les paramètres définis au début 
+code_departement <- params$code_departement
+
+# Filter les données d'après les paramètres
+filtered_departement <- elus_cm[elus_cm$`Code.du.département` == code_departement, ]
+
+# Extraire la libellé du département
+nom_departement <- unique(filtered_departement$`Libellé.du.département`)
+
+# Créer un dataframe avec la fonction creer_commune pour le département sélectionée
+df_departement <- creer_departement(elus_cm, nom_departement)
+
+# Affichage des données par rapport au département sélectionné
+head(df_departement)
+```
+
+```{r, include=FALSE}
+# Filtrer les données pour la commune (@params$code_commune)
+
+# Avec cette code nous sommes capables de filtrer les données nécessaires pour le rapport de la commune.
+
+# Filtrer les données pour la commune choisie
+
+
+# Utiliser les paramètres définis au début 
+code_commune <- params$code_commune
+
+# Filter les données d'après les paramètres
+filtered_commune <- elus_cm[elus_cm$`Code.de.la.commune` == code_commune, ]
+
+# Extraire la libellé de la commune 
+nom_commune <- unique(filtered_commune$`Libellé.de.la.commune`)
+
+# Créer un dataframe avec la fonction creer_commune pour la commune sélectionée
+df_commune <- creer_commune(elus_cm, nom_commune)
+
+# # Affichage des données par rapport à la commune sélectionnée
+head(df_commune)
+```
+
+# Introduction
+
+Ce document a pour objectif de réaliser une analyse statistique des caractéristiques des élus lors des élections françaises de 2024. Concrètement, nous allons nous focaliser sur le département "`r nom_departement`" (`r params$code_departement`) et la commune "`r nom_commune`" (`r params$code_commune`) .
+
+# Analyse du département (`r params$code_departement`)
+
+Dans cette séction nous procédons à documenter les caractéristiques principales des élus lors des élections françaises des 2024, telles que l'âge ou leur professions pour le département `r params$code_departement` .
+
+# Informations sur le nombre d'adjoints pour le departement numéro `r params$code_departement`
+
+Premièrement, nous vérifions le nombre d'adjoints pour le département.
+
+Nombre d'adjoints:
+
+```{r}
+compter_nombre_d_adjoints(df_departement)
+```
+
+## Informations par rapport à l'âge des élus pour le département numéro `r params$code_departement`
+
+Tout d'abord nous alons créer la distribution de l'âge des élus pour le département `r params$code_departement` . Nous pouvons idéntifier par ailleurs l'élu.e le/la plus âgé.e et le/la plus jeune. En plus, une distirbution de l'âge est proposé pour les communes avec l'âge moyenne la plus faible et celle avec l'âge moyenne la plus élevée.
+
+```{r}
+Summary_departement(df_departement)
+```
+
+## Informations par rapport aux professions des élus pour le département `r params$code_departement`.
+
+Nous passons maintenant à une visualisation des différentes professions des élus lors des élections de 2024 pour le département `r params$code_departement` .
+
+```{r}
+plot_departement(df_departement)
+```
+
+# Analyse de la commune numéro (`r params$code_commune`)
+
+Dans cette séction nous procédons à documenter les caractéristiques principales des élus lors des élections françaises des 2024, telles que l'âge ou leur professions pour la commune `r params$code_commune` .
+
+# Informations sur le nombre d'adjoints pour la commune
+
+Premièrement, nous vérifions le nombre d'adjoints pour la commune numéro `r params$code_commune`.
+
+Nombre d'adjoints:
+
+```{r}
+compter_nombre_d_adjoints(df_commune)
+```
+
+## Informations par rapport à l'âge des élus pour la commune numéro `r params$code_commune`
+
+Tout d'abord nous alons créer la distribution de l'âge des élus pour la commune `r params$code_commune` . Nous pouvons idéntifier par ailleurs l'élu.e le/la plus âgé.e.
+
+```{r}
+summary_commune(df_commune)
+```
+
+## Informations par rapport aux professions des élus pour la commune numéro `r params$code_commune`
+
+Nous passons maintenant à une visualisation des différentes professions des élus lors des élections de 2024 pour la commune `r params$code_commune` .
+
+```{r}
+plot_commune(df_commune)
+```
+
+# Bibliographie
+
+Data.gouv.fr. (s.f.). *Répertoire national des élus*. Plateforme ouverte des données publiques françaises. <https://www.data.gouv.fr/fr/datasets/repertoire-national-des-elus-1/#/resources/d5f400de-ae3f-4966-8cb6-a85c70c6c24a>
+
+# Packages
+
+-firstlibAlex (<https://github.com/aletorell/firstlibAlex>)
+
+Fonctions utilisées du package: creer_commune, creer_departement, summary_commune, Summary_departement, plot_commune, plot_departement et compter_nombre_d_adjoints.
+
+-quarto
+
+-remotes
+
+-knitr
+
+-writexl
+
+# Annexes
+
+## Base de données pour le département numéro `r params$code_departement`
+
+```{r, include=FALSE}
+library(writexl)
+
+# Garder les données du département dans un fichier excel
+write_xlsx(df_departement, "df_departement.xlsx")
+
+```
+
+```{r}
+library(knitr)
+kable(head(df_departement))
+```
+
+Vous pouvez récuperer les données du département [ici](df_departement.xlsx)
+
+## Code pour la création de la base de données par rapport au département `r params$code_departement`
+
+```{r}
+# Utiliser les paramètres définis au début 
+code_departement <- params$code_departement
+
+# Filter les données d'après les paramètres
+filtered_departement <- elus_cm[elus_cm$`Code.du.département` == code_departement, ]
+
+# Extraire la libellé du département
+nom_departement <- unique(filtered_departement$`Libellé.du.département`)
+
+# Créer un dataframe avec la fonction creer_commune pour le département sélectionée
+df_departement <- creer_departement(elus_cm, nom_departement)
+```
+
+## Base de données pour la commune numéro `r params$code_commune`
+
+```{r, include=FALSE}
+library(writexl)
+
+# Garder les données de la commune dans un fichier excel
+write_xlsx(df_departement, "df_commune.xlsx")
+```
+
+```{r}
+library(knitr)
+kable(head(df_commune))
+```
+
+Vous pouvez récuperer les données [ici](df_commune.xlsx)
+
+## Code pour la création de la base de données par rapport à la commune `r params$code_commune`
+
+```{r}
+# Utiliser les paramètres définis au début 
+code_commune <- params$code_commune
+
+# Filter les données d'après les paramètres
+filtered_commune <- elus_cm[elus_cm$`Code.de.la.commune` == code_commune, ]
+
+# Extraire la libellé de la commune 
+nom_commune <- unique(filtered_commune$`Libellé.de.la.commune`)
+
+# Créer un dataframe avec la fonction creer_commune pour la commune sélectionée
+df_commune <- creer_commune(elus_cm, nom_commune)
+
+```
