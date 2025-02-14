@@ -1,9 +1,9 @@
 Package: firstlibAlex
-Title: What the Package Does (One Line, Title Case)
+Title: Analyse des élections françaises de 2024
 Version: 0.0.0.9000
 Authors@R: 
-    person("Àlex", "Chafes Martorell", , "aalexchafes17@gamail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Àlex", "Chafes Martorell", , "aalexchafes17@gmail.com", role = c("aut", "cre"))
+Description: Ce paquet permet d'analyser les caractéristiques des élus lors des élections françaises de 2024. Il utilise des données basées sur le code de la commune et du département pour générer des rapports sur les résultats électoraux et les profils des élus. Le rapport généré peut être personnalisé en fonction des paramètres fournis par l'utilisateur, offrant ainsi une analyse détaillée des résultats électoraux à l'échelle locale et départementale.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -16,3 +16,4 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://github.com/aletorell/firstlibAlex
 BugReports: https://github.com/aletorell/firstlibAlex/issues
+

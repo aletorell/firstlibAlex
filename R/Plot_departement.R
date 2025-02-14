@@ -56,7 +56,7 @@ plot_departement <- function(data) {
     # Sélectionner les 10 catégories les plus représentées
     top_professions <- sort(profession_counts, decreasing = TRUE)[1:10]
 
-    # Paramétrage des marges du graphique
+    # Ajustement des marges du graphique
     par(mar = c(5, 22, 6, 2))
 
     # Création du graphique
