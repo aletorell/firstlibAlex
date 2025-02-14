@@ -1,0 +1,10 @@
+pandoc: '3.2'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  Genere_un_rapport_d_analyses: Genere_un_rapport_d_analyses.html
+  generer_rapport_analyses: generer_rapport_analyses.html
+last_built: 2025-02-14T18:49Z
+urls:
+  reference: https://aletorell.github.io/firstlibAlex/reference
+  article: https://aletorell.github.io/firstlibAlex/articles
